@@ -52,12 +52,18 @@ export class TransactionController {
   }
 
   @Get('get-transaction')
-  @Cron(CronExpression.EVERY_10_HOURS)
+  // @Cron(CronExpression.EVERY_MINUTE)
   async getPendingTransactions() {
+    const cron =
+      await this.scheduleConfigurationService.getScheduleConfiguration(
+        'transacciones pendientes',
+      );
+
+    if (!cron.status) return true;
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
-        message: 'get Transactions',
+        message: 'get Transactions status',
         data: await this.transactionService.getPendingTransactions(),
       };
     } catch (error) {
