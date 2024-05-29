@@ -12,6 +12,7 @@ export class BindController {
   @Post('send-transaction')
   async sendTransaction(@Body() payload: DoRequestDto): Promise<DefaultResponsesDto | ErrorResponseDto> {
     try {
+      console.log("@Post('send-transaction')")
       return {
         statusCode: HttpStatus.ACCEPTED,
         message: 'send Transaction',
@@ -24,6 +25,7 @@ export class BindController {
 
   @Get('get-transaction')
   async getTransaction(): Promise<DefaultResponsesDto | ErrorResponseDto> {
+    console.log("@Post('get-transaction')")
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
@@ -37,6 +39,7 @@ export class BindController {
 
   @Get('get-transaction/:id')
   async getTransactionById(@Param('id') id: string): Promise<DefaultResponsesDto | ErrorResponseDto> {
+    console.log("@Get('get-transaction/:id')")
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
@@ -50,6 +53,7 @@ export class BindController {
 
   @Get('get-account/:cvu')
   async getAccount(@Param('cvu') cvu: string): Promise<DefaultResponsesDto | ErrorResponseDto> {
+    console.log("@Get('get-account/:cvu')")
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,

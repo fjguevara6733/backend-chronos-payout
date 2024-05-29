@@ -52,6 +52,7 @@ export class BindService {
 
             return response.data.token;
         } catch (error) {
+            console.log(error)
             throw new Error(error?.response?.data?.message);
         }
     }
@@ -121,6 +122,7 @@ export class BindService {
 
             return response.data;
         } catch (error) {
+            console.log(error)
             throw new Error(error?.response?.data?.message);
         }
     }
@@ -136,6 +138,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
+            console.log(error)
             throw new Error(error?.response?.data?.message)
         }
     }
@@ -151,6 +154,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
+            console.log(error)
             throw new Error(error?.response?.data?.message)
         }
     }
@@ -168,6 +172,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
+            console.log(error)
             throw new Error(error?.response?.data?.message)
         }
     }
