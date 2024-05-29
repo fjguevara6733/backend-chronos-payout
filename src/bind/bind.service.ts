@@ -33,8 +33,6 @@ export class BindService {
                 data,
             };
 
-            console.log({config})
-
             if (process.env.CLIENT_CERTIFICATE && process.env.CLIENT_KEY) {
                 this.httpsAgent = new https.Agent({
                     cert: readFileSync(process.env.CLIENT_CERTIFICATE),
@@ -43,7 +41,6 @@ export class BindService {
 
                 config['httpsAgent'] = this.httpsAgent;
             }
-            console.log({config})
             const response = await axios(config);
 
             const timeExpire = new Date(
@@ -57,7 +54,6 @@ export class BindService {
             return response.data.token;
         } catch (error) {
             console.log(error?.response)
-            console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message);
         }
     }
@@ -116,14 +112,15 @@ export class BindService {
             }
 
             const url: string = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU/transaction-requests`;
-            console.log({headers, params, url})
 
             const config: AxiosRequestConfig = {
                 method: 'POST',
                 url,
                 data: params,
-                headers
+                headers,
+                httpsAgent: this.httpsAgent
             };
+
             const response = await axios(config);
 
             return response.data;
@@ -139,7 +136,8 @@ export class BindService {
                 Authorization: `JWT ${await this.getToken()}`
             }
             const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU`, {
-                headers
+                headers,
+                httpsAgent: this.httpsAgent
             })
 
             return response.data
@@ -155,7 +153,8 @@ export class BindService {
                 Authorization: `JWT ${await this.getToken()}`
             }
             const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU/${id}`, {
-                headers
+                headers,
+                httpsAgent: this.httpsAgent
             })
 
             return response.data
