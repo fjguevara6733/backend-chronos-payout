@@ -25,11 +25,15 @@ export class BindService {
                 password: process.env.PASSWORD_BIND,
             };
 
+            console.log({data})
+
             const config = {
                 method: 'post',
                 url: process.env.URL_BIND + '/login/jwt',
                 data,
             };
+
+            console.log({config})
 
             if (process.env.CLIENT_CERTIFICATE && process.env.CLIENT_KEY) {
                 this.httpsAgent = new https.Agent({
@@ -39,7 +43,7 @@ export class BindService {
 
                 config['httpsAgent'] = this.httpsAgent;
             }
-
+            console.log({config})
             const response = await axios(config);
 
             const timeExpire = new Date(
