@@ -128,8 +128,8 @@ export class BindService {
 
             return response.data;
         } catch (error) {
-            console.log(error)
-            throw new Error(error?.response?.data?.message);
+            console.log(error.response.data)
+            throw new Error('falla en generar la trasnaccion');
         }
     }
 
