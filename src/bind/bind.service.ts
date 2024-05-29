@@ -93,7 +93,7 @@ export class BindService {
         try {
             const { destinationCbu, amount } = body;
 
-            await this.getAccount(destinationCbu)
+            // await this.getAccount(destinationCbu)
 
             const params: BindRequestInterface = {
                 origin_id: String(body.idTransaction),
@@ -116,6 +116,7 @@ export class BindService {
             }
 
             const url: string = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU/transaction-requests`;
+            console.log({headers, params, url})
 
             const config: AxiosRequestConfig = {
                 method: 'POST',
