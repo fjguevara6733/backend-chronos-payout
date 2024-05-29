@@ -56,7 +56,8 @@ export class BindService {
 
             return response.data.token;
         } catch (error) {
-            console.log(error)
+            console.log(error?.response)
+            console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message);
         }
     }
