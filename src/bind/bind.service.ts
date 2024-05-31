@@ -170,7 +170,8 @@ export class BindService {
                 Authorization: `JWT ${await this.getToken()}`
             }
             const response = await axios.get(`${this.URL}/accounts/cbu/${cvu}`, {
-                headers
+                headers,
+                httpsAgent: this.httpsAgent
             })
 
             if (response.data.owners.length === 0) throw new Error('CVU invalida para operar.')
