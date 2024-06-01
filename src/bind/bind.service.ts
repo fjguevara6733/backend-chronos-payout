@@ -149,7 +149,7 @@ export class BindService {
 
     /**
      * @method getCustomerCuit
-     * Servicio para obtener el CUIT de un cliente
+     * Servicio para obtener el CUIT de un cliente a traves del CVU
      * @param cvu
      * @returns
      */
@@ -176,6 +176,12 @@ export class BindService {
         }
     }
 
+    /**
+     * @method getCustomerAlias
+     * Servicio para obtener el CUIT de un cliente a traves del alias
+     * @param alias 
+     * @returns 
+     */
     async getCustomerAlias(alias: string){
         const headers = {
             Authorization: `JWT ${await this.getToken()}`
