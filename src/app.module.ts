@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { BindModule } from './bind/bind.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { TempLogModule } from './temp-log/temp-log.module';
+import { ScheduleConfigurationModule } from './schedule-configuration/schedule-configuration.module';
 
 @Module({
   imports: [

@@ -14,6 +14,7 @@ import {
 import { TransactionService } from './transaction.service';
 import { ApiTags } from '@nestjs/swagger';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ScheduleConfigurationService } from 'src/schedule-configuration/schedule-configuration.service';
 
 @ApiTags('Transaction')
 @Controller('transaction')
@@ -21,6 +22,7 @@ export class TransactionController {
   constructor(
     private bindService: BindService,
     private transactionService: TransactionService,
+    private scheduleConfigurationService: ScheduleConfigurationService,
   ) {}
 
   @Get('token')
