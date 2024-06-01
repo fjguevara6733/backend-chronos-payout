@@ -18,7 +18,7 @@ export class BindController {
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
-        message: 'get-customer-cuit',
+        message: 'get customer cuit',
         data: await this.bindService.getCustomerCuit(cvu)
       };
     } catch (error) {
@@ -31,7 +31,7 @@ export class BindController {
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
-        message: 'get-customer-cuit',
+        message: 'get customer alias',
         data: await this.bindService.getCustomerAlias(alias)
       };
     } catch (error) {
