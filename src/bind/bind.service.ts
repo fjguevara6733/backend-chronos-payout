@@ -123,9 +123,12 @@ export class BindService {
 
             const response = await axios(config);
 
-            console.log(response.data)
+            console.log(response.data);
+            console.log('body', body);
+            
             return response.data;
         } catch (error) {
+            console.log('body', body);
             console.log(error.response.data)
             throw new Error('falla en generar la trasnaccion');
         }
@@ -181,6 +184,38 @@ export class BindService {
         } catch (error) {
             console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message)
+        }
+    }
+    /**
+     * @method getCustomerAlias
+     * Servicio para obtener el CUIT de un cliente a traves del alias
+     * @param alias 
+     * @returns 
+     */
+    async getCustomerAlias(alias: string){
+        const headers = {
+            Authorization: `JWT ${await this.getToken()}`
+        }
+        const url: string = `${this.URL}/accounts/alias/${alias}`;
+
+        try{
+            const config: AxiosRequestConfig = {
+                method: 'GET',
+                url,
+                headers,
+                httpsAgent: this.httpsAgent
+            };
+            const response = await axios(config);
+            const data = response.data;
+
+            if (data.owners.length === 0) throw new Error('Alias invalido para operar.');
+
+            return {
+                name: data.owner[0].display_name,
+                cuit: data.owner[0].id
+            }
+        }catch(error){
+            throw new Error('Error al obtener cuit.');
         }
     }
 }

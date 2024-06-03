@@ -64,4 +64,17 @@ export class BindController {
       throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
     }
   }
+
+  @Get('get-customer-alias/:alias')
+  async getCustomerAlias(@Param('alias') alias: string) {
+    try {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'get customer alias',
+        data: await this.bindService.getCustomerAlias(alias)
+      };
+    } catch (error) {
+      throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }
