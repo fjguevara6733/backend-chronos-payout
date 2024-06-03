@@ -146,7 +146,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
-            console.log(error)
+            console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message)
         }
     }
@@ -163,7 +163,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
-            console.log(error)
+            console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message)
         }
     }
@@ -215,7 +215,7 @@ export class BindService {
                 cuit: data.owner[0].id
             }
         }catch(error){
-            console.log(error?.response?.data);
+            console.log(error?.response?.data)
             throw new Error('Error al obtener alias.');
         }
     }
