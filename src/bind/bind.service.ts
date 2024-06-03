@@ -123,9 +123,12 @@ export class BindService {
 
             const response = await axios(config);
 
-            console.log(response.data)
+            console.log(response.data);
+            console.log('body', body);
+            
             return response.data;
         } catch (error) {
+            console.log('body', body);
             console.log(error.response.data)
             throw new Error('falla en generar la trasnaccion');
         }
