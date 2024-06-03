@@ -204,6 +204,9 @@ export class BindService {
             };
             const response = await axios(config);
             const data = response.data;
+
+            if (response.data.owners.length === 0) throw new Error('CVU invalida para operar.');
+
             return {
                 name: data.owner[0].display_name,
                 cuit: data.owner[0].id
