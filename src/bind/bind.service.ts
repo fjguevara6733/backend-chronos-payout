@@ -183,4 +183,33 @@ export class BindService {
             throw new Error(error?.response?.data?.message)
         }
     }
+    /**
+     * @method getCustomerAlias
+     * Servicio para obtener el CUIT de un cliente a traves del alias
+     * @param alias 
+     * @returns 
+     */
+    async getCustomerAlias(alias: string){
+        const headers = {
+            Authorization: `JWT ${await this.getToken()}`
+        }
+        const url: string = `${this.URL}/accounts/alias/${alias}`;
+
+        try{
+            const config: AxiosRequestConfig = {
+                method: 'GET',
+                url,
+                headers,
+                httpsAgent: this.httpsAgent
+            };
+            const response = await axios(config);
+            const data = response.data;
+            return {
+                name: data.owner[0].display_name,
+                cuit: data.owner[0].id
+            }
+        }catch(error){
+            throw new Error('Error al obtener cuit.');
+        }
+    }
 }
