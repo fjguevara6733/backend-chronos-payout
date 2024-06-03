@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { BindService } from './bind.service';
-import { DoRequestDto } from 'src/common/dto/bind.dto';
+import { AliasDto, DoRequestDto } from 'src/common/dto/bind.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { DefaultResponsesDto, ErrorResponseDto } from 'src/common/dto/response.dto';
 
@@ -65,13 +65,13 @@ export class BindController {
     }
   }
 
-  @Get('get-customer-alias/:alias')
-  async getCustomerAlias(@Param('alias') alias: string) {
+  @Post('get-customer-alias')
+  async getCustomerAlias(@Body() body: AliasDto) {
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
         message: 'get customer alias',
-        data: await this.bindService.getCustomerAlias(alias)
+        data: await this.bindService.getCustomerAlias(body)
       };
     } catch (error) {
       throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);

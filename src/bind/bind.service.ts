@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios, { AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 import * as https from 'https';
-import { DoRequestDto } from 'src/common/dto/bind.dto';
+import { AliasDto, DoRequestDto } from 'src/common/dto/bind.dto';
 import { BindRequestInterface } from 'src/common/interfaces/bind.interface';
 import { CoinsFiat, ConceptBind } from 'src/common/utils/enum';
 
@@ -192,11 +192,11 @@ export class BindService {
      * @param alias 
      * @returns 
      */
-    async getCustomerAlias(alias: string){
+    async getCustomerAlias(body: AliasDto){
         const headers = {
             Authorization: `JWT ${await this.getToken()}`
         }
-        const url: string = `${this.URL}/accounts/alias/${alias}`;
+        const url: string = `${this.URL}/accounts/alias/${body.alias}`;
 
         try{
             const config: AxiosRequestConfig = {
@@ -215,7 +215,7 @@ export class BindService {
                 cuit: data.owner[0].id
             }
         }catch(error){
-            throw new Error('Error al obtener cuit.');
+            throw new Error('Error al obtener alias.');
         }
     }
 }

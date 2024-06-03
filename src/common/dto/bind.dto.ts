@@ -17,3 +17,10 @@ export class DoRequestDto {
   @IsNotEmpty()
   idTransaction: string;
 }
+
+export class AliasDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  alias: string;
+}
