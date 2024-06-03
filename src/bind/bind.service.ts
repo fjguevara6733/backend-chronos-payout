@@ -215,6 +215,7 @@ export class BindService {
                 cuit: data.owner[0].id
             }
         }catch(error){
+            console.log(error?.response?.data);
             throw new Error('Error al obtener alias.');
         }
     }
