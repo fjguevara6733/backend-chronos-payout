@@ -25,7 +25,7 @@ export class BindService {
                 password: process.env.PASSWORD_BIND,
             };
 
-            console.log({data})
+            console.log({ data })
 
             const config = {
                 method: 'post',
@@ -125,16 +125,16 @@ export class BindService {
 
             console.log(response.data);
             console.log('body', body);
-            
+
             return response.data;
         } catch (error) {
             console.log('body', body);
             console.log(error.response.data)
-            throw new Error('falla en generar la trasnaccion');
+            throw new Error(error?.response?.data?.message);
         }
     }
 
-    async getTransaction(){
+    async getTransaction() {
         try {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`
@@ -151,7 +151,7 @@ export class BindService {
         }
     }
 
-    async getTransactionByID(id: string){
+    async getTransactionByID(id: string) {
         try {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`
@@ -168,7 +168,7 @@ export class BindService {
         }
     }
 
-    async getAccount(cvu:string){
+    async getAccount(cvu: string) {
         try {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`
@@ -192,13 +192,13 @@ export class BindService {
      * @param alias 
      * @returns 
      */
-    async getCustomerAlias(body: AliasDto){
+    async getCustomerAlias(body: AliasDto) {
         const headers = {
             Authorization: `JWT ${await this.getToken()}`
         }
         const url: string = `${this.URL}/accounts/alias/${body.alias}`;
 
-        try{
+        try {
             const config: AxiosRequestConfig = {
                 method: 'GET',
                 url,
