@@ -210,11 +210,8 @@ export class BindService {
 
             if (data.owners.length === 0) throw new Error('Alias invalido para operar.');
 
-            return {
-                name: data.owners[0].display_name,
-                cuit: data.owners[0].id
-            }
-        } catch (error) {
+            return data;
+        }catch(error){
             console.log(error?.response?.data)
             throw new Error('Error al obtener alias.');
         }
