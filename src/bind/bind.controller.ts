@@ -79,7 +79,7 @@ export class BindController {
   }
 
   @Get('get-account-balances')
-  async getAccountBalances(@Param('cvu') cvu: string): Promise<DefaultResponsesDto | ErrorResponseDto> {
+  async getAccountBalances(){
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
