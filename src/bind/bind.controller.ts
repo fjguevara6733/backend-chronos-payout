@@ -77,4 +77,17 @@ export class BindController {
       throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
     }
   }
+
+  @Get('get-account-balances')
+  async getAccountBalances(){
+    try {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Get Account balances',
+        data: await this.bindService.getAccountBalances()
+      };
+    } catch (error) {
+      throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }

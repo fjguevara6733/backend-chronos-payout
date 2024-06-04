@@ -219,4 +219,35 @@ export class BindService {
             throw new Error('Error al obtener alias.');
         }
     }
+
+    /**
+     * @method getAccountBalances
+     * Servicio para obtener el balance de las cuentas
+     * @returns 
+     */
+    async getAccountBalances() {
+        try {
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`
+            }
+            const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}`, {
+                headers,
+                httpsAgent: this.httpsAgent
+            });
+            const data = response.data;
+
+            if (data.length === 0) throw new Error('Cuenta sin ningún balance.');
+            return data.map((account: any) => {
+                return {
+                    alias: account.label,
+                    balance: account.balance.amount,
+                    cuit: account.owners[0].id,
+                    cbu: account.account_routing.address
+                }
+            })
+        } catch (error) {
+            console.log(error?.response?.data)
+            throw new Error(error?.response?.data?.message)
+        }
+    }
 }
