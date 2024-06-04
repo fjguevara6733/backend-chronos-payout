@@ -230,7 +230,8 @@ export class BindService {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`
             }
-            const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}`, {
+            const url = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.VIEW_ID}`;
+            const response = await axios.get(url, {
                 headers,
                 httpsAgent: this.httpsAgent
             });
