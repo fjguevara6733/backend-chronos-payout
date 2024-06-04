@@ -77,4 +77,17 @@ export class BindController {
       throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
     }
   }
+
+  @Get('get-account-balances')
+  async getAccountBalances(@Param('cvu') cvu: string): Promise<DefaultResponsesDto | ErrorResponseDto> {
+    try {
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'Get Account balances',
+        data: await this.bindService.getAccountBalances()
+      };
+    } catch (error) {
+      throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }
