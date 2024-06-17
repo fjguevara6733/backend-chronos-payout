@@ -53,18 +53,6 @@ export class StarspayService {
       Cookie: 'PHPSESSID=tvvq79a8161so6qqkqd7pcn9se',
     };
 
-    body = {
-      partner_user_uid: 123456,
-      partner_user_name: 'Philip William',
-      partner_user_email: 'philip@email.com',
-      partner_user_document: '42345678981',
-      partner_user_birthday: '1990-01-01',
-      partner_user_mobile: '11998589706',
-      partner_order_number: 'ABC123456',
-      partner_order_amount: 2.0,
-      partner_order_group: 1,
-    };
-
     const config: AxiosRequestConfig = {
       url,
       method: 'POST',
