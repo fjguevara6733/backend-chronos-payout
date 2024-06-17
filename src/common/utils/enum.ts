@@ -36,3 +36,8 @@ export enum ConceptBind {
     HAB = 'HAB',
     VAR = 'VAR'
 }
+
+export enum partnerOrderGroup{
+    Brasil = 1,
+    Peru = 12
+}

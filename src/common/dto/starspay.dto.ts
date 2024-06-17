@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { partnerOrderGroup } from '../utils/enum';
 
 export class GetCpfInfoDto {
   @ApiProperty()
@@ -56,10 +57,16 @@ export class MakePaymentDto {
   @IsNotEmpty()
   partner_order_amount: number;
 
-  @ApiProperty()
+  @ApiProperty({enum: partnerOrderGroup})
   @IsNumber()
   @IsNotEmpty()
   partner_order_group: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  partner_success_url: string;
 }
 
 export class CheckRequestDto {

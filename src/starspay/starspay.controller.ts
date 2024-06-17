@@ -22,7 +22,7 @@ import {
 export class StarspayController {
   constructor(private readonly starspayService: StarspayService) {}
 
-  @Get('get-balances-pix')
+  @Get('get-balances')
   async getAccountBalances() {
     try {
       return {
@@ -35,7 +35,7 @@ export class StarspayController {
     }
   }
 
-  @Post('make-payment-pix')
+  @Post('make-payment')
   async makePayment(@Body() body: MakePaymentDto) {
     try {
       return {
@@ -48,7 +48,7 @@ export class StarspayController {
     }
   }
 
-  @Put('update-payment-pix')
+  @Put('update-payment')
   async updatePayment(@Body() body: PaymentUpdateRequestDto) {
     try {
       return {
@@ -61,7 +61,7 @@ export class StarspayController {
     }
   }
 
-  @Post('get-cpf-customer-pix')
+  @Post('get-cpf-customer')
   async getCpfInfo(@Body() body: GetCpfInfoDto) {
     try {
       return {
@@ -74,7 +74,7 @@ export class StarspayController {
     }
   }
 
-  @Post('get-check-customer-pix')
+  @Post('get-check-customer')
   async performCheck(@Body() body: CheckRequestDto) {
     try {
       return {
@@ -87,7 +87,7 @@ export class StarspayController {
     }
   }
 
-  @Get('get-transaction-pix')
+  @Get('get-transaction')
   @ApiQuery({ name: 'id', type: String })
   async getTransaction(@Query('id') id: string) {
     try {
