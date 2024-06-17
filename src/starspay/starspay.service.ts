@@ -114,18 +114,6 @@ export class StarspayService {
       'Content-Type': 'application/json',
       Cookie: 'PHPSESSID=oi5fv05rlt8tra7rllgb9hb0qf',
     };
-    body = {
-      partner_user_uid: '123456',
-      partner_user_document: '42345678981',
-      partner_order_number: 'ABC123456',
-      partner_order_amount: '2.00',
-      order_token: 'ce68-4e9f-400a-8099-f108',
-      order_operation_id: 4,
-      order_status_id: 7,
-      order_created_at: '2024-02-22 18:17:15',
-      order_valid_at: '2024-02-22 21:17:15',
-      order_updated_at: '2024-02-22 19:03:41',
-    };
 
     const config: AxiosRequestConfig = {
       url,

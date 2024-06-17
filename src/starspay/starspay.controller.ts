@@ -53,7 +53,7 @@ export class StarspayController {
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
-        message: 'make payment',
+        message: 'update payment',
         data: await this.starspayService.updatePayment(body),
       };
     } catch (error) {
@@ -93,7 +93,7 @@ export class StarspayController {
     try {
       return {
         statusCode: HttpStatus.ACCEPTED,
-        message: 'Get Account balances',
+        message: 'Get transaction',
         data: await this.starspayService.getTransaction(id),
       };
     } catch (error) {
