@@ -142,7 +142,6 @@ export class StarspayService {
       Authorization:
         'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
       'Content-Type': 'application/json',
-      Cookie: 'PHPSESSID=n1qg9jgdo9m1nitcl8rcnqj929',
     };
 
     const config: AxiosRequestConfig = {
