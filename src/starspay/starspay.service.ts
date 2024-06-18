@@ -50,7 +50,6 @@ export class StarspayService {
       Authorization:
         'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
       'Content-Type': 'application/json',
-      Cookie: 'PHPSESSID=tvvq79a8161so6qqkqd7pcn9se',
     };
 
     const config: AxiosRequestConfig = {
@@ -168,7 +167,6 @@ export class StarspayService {
       Authorization:
         'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
       'Content-Type': 'application/json',
-      Cookie: 'PHPSESSID=tvvq79a8161so6qqkqd7pcn9se',
     };
 
     const config: AxiosRequestConfig = {
