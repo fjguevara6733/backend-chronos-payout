@@ -57,7 +57,7 @@ export class MakePaymentDto {
   @IsNotEmpty()
   partner_order_amount: number;
 
-  @ApiProperty({enum: partnerOrderGroup})
+  @ApiProperty({enum: partnerOrderGroup, description: "1 para Brasil y 12 para Peru"})
   @IsNumber()
   @IsNotEmpty()
   partner_order_group: number;
@@ -69,56 +69,89 @@ export class MakePaymentDto {
   partner_success_url: string;
 }
 
-export class CheckRequestDto {
+export class PrizepoolRequestDto {
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   partner_user_uid: string;
 
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
+  partner_user_name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  partner_user_email: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   partner_user_document: string;
 
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
+  partner_user_birthday: Date;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  partner_user_zipcode: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  partner_user_mobile: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
   partner_order_number: string;
 
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   partner_order_amount: string;
 
-  @ApiProperty()
+  @ApiProperty({enum: partnerOrderGroup, description: "1 para Brasil y 12 para Peru"})
+  @IsNotEmpty()
+  @IsNumber()
+  partner_order_group: number;
+
+  @ApiProperty({description: "Usar para Brasil"})
+  @IsOptional()
+  @IsNotEmpty()
   @IsString()
+  partner_withdraw_pixtype: string;
+
+  @ApiProperty({description: "Usar para Brasil"})
   @IsNotEmpty()
-  order_token: string;
+  @IsString()
+  partner_withdraw_pixkey: string;
 
   @ApiProperty()
-  @IsNumber()
   @IsNotEmpty()
-  order_operation_id: number;
+  @IsString()
+  partner_withdraw_pwd: string;
 
-  @ApiProperty()
-  @IsNumber()
+  @ApiProperty({description: "Usar para Peru"})
+  @IsOptional()
   @IsNotEmpty()
-  order_status_id: number;
+  @IsString()
+  partner_withdraw_cci:string;
 
-  @ApiProperty()
-  @IsDateString()
+  @ApiProperty({description: "Usar para Peru", default: "CUENTA"})
+  @IsOptional()
   @IsNotEmpty()
-  order_created_at: string;
+  @IsString()
+  partner_withdraw_account_type: string;
 
-  @ApiProperty()
-  @IsDateString()
+  @ApiProperty({description: "Usar para Peru"})
+  @IsOptional()
   @IsNotEmpty()
-  order_valid_at: string;
-
-  @ApiProperty()
-  @IsDateString()
-  @IsNotEmpty()
-  order_updated_at: string;
+  @IsString()
+  partner_withdraw_account:string;
 }
 
 export class PaymentUpdateRequestDto {

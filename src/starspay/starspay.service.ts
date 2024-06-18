@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosRequestConfig } from 'axios';
 import {
-  CheckRequestDto,
+  PrizepoolRequestDto,
   GetCpfInfoDto,
   MakePaymentDto,
   PaymentUpdateRequestDto,
@@ -9,6 +9,15 @@ import {
 
 @Injectable()
 export class StarspayService {
+  private ambiente = 'dev';
+  private URL =
+    this.ambiente === 'dev'
+      ? process.env.URL_STARSPAY_DEV
+      : process.env.URL_STARSPAY_PROD;
+  private Authorization =
+    this.ambiente === 'dev'
+      ? process.env.AUTHORIZATION_STARSPAY_DEV
+      : process.env.AUTHORIZATION_STARSPAY_PROD;
   constructor() {}
   /**
    * @method getAccountBalances
@@ -16,10 +25,9 @@ export class StarspayService {
    * @returns
    */
   async getAccountBalances() {
-    const url: string = 'https://sandbox.starspay.net/v1/balance';
+    const url: string = `${this.URL}/balance`;
     const headers: { [key: string]: string } = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
     };
 
@@ -45,10 +53,9 @@ export class StarspayService {
    * @returns
    */
   async makePayment(body: MakePaymentDto) {
-    const url = 'https://sandbox.starspay.net/v1/payment';
+    const url = `${this.URL}/payment`;
     const headers = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
     };
 
@@ -75,12 +82,10 @@ export class StarspayService {
    * @returns
    */
   async getCpfInfo(body: GetCpfInfoDto) {
-    const url = 'https://sandbox.starspay.net/v1/cpf';
+    const url = `${this.URL}/cpf`;
     const headers = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
-      Cookie: 'PHPSESSID=qlvku905vc508mkt7468mos1g8',
     };
 
     const config: AxiosRequestConfig = {
@@ -100,18 +105,16 @@ export class StarspayService {
   }
 
   /**
-   * @method performCheck
+   * @method prizepoolRequest
    * Servicio para realizar un check
    * @param body
    * @returns
    */
-  async performCheck(body: CheckRequestDto) {
-    const url = 'https://sandbox.starspay.net/v1/check';
+  async prizepoolRequest(body: PrizepoolRequestDto) {
+    const url = `${this.URL}/prizepool`;
     const headers = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
-      Cookie: 'PHPSESSID=oi5fv05rlt8tra7rllgb9hb0qf',
     };
 
     const config: AxiosRequestConfig = {
@@ -131,16 +134,15 @@ export class StarspayService {
   }
 
   /**
-   * @method updatePayment
+   * @method updateTransaction
    * Servicio para actualizar un pago
    * @param body
    * @returns
    */
-  async updatePayment(body: PaymentUpdateRequestDto) {
-    const url = 'https://sandbox.starspay.net/v1/payment/update';
+  async updateTransaction(body: PaymentUpdateRequestDto, isPayment: boolean = true) {
+    const url = isPayment ? `${this.URL}/payment/update` : `${this.URL}/prizepool/update`;
     const headers = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
     };
 
@@ -161,10 +163,9 @@ export class StarspayService {
   }
 
   async getTransaction(id: string) {
-    const url = `https://sandbox.starspay.net/v1/transaction?id=${id}`;
+    const url = `${this.URL}/transaction?id=${id}`;
     const headers = {
-      Authorization:
-        'Basic MWUxZC1jNDhmLTRiZTYtYWNiMi1mMmNmOjBhOGFjZjk5ZmI4YjNjZTQ5YmEyYzEzZDZiYzgwYWNhMzliZjM5YjgyZTYwMDNmY2RkN2JkMDIxNDg4NTY3NTA=',
+      Authorization: `Basic ${this.Authorization}`,
       'Content-Type': 'application/json',
     };
 
