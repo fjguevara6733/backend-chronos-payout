@@ -143,6 +143,7 @@ export class BindService {
                 obp_offset: param.offset,
                 obp_from_date: param.from_date,
                 obp_to_date: param.to_date,
+                obp_origin: param.origin
             }
             const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU`, {
                 headers,
@@ -151,6 +152,7 @@ export class BindService {
 
             return response.data
         } catch (error) {
+            console.log('body', param)
             console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message)
         }
