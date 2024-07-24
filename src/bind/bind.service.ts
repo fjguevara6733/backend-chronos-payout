@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import axios, { AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 import * as https from 'https';
-import { AliasDto, DoRequestDto } from 'src/common/dto/bind.dto';
+import { AliasDto, DoRequestDto, DoRequestDtoDebin } from 'src/common/dto/bind.dto';
 import { BindRequestInterface } from 'src/common/interfaces/bind.interface';
 import { CoinsFiat, ConceptBind } from 'src/common/utils/enum';
 
@@ -134,10 +134,15 @@ export class BindService {
         }
     }
 
-    async getTransaction() {
+    async getTransaction(param: any) {
         try {
             const headers = {
-                Authorization: `JWT ${await this.getToken()}`
+                Authorization: `JWT ${await this.getToken()}`,
+                obp_status: param.status,
+                obp_limit: param.limit,
+                obp_offset: param.offset,
+                obp_from_date: param.from_date,
+                obp_to_date: param.to_date,
             }
             const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU`, {
                 headers,
@@ -211,7 +216,7 @@ export class BindService {
             if (data.owners.length === 0) throw new Error('Alias invalido para operar.');
 
             return data;
-        }catch(error){
+        } catch (error) {
             console.log(error?.response?.data)
             throw new Error('Error al obtener alias.');
         }
@@ -246,6 +251,151 @@ export class BindService {
         } catch (error) {
             console.log(error?.response?.data)
             throw new Error(error?.response?.data?.message)
+        }
+    }
+
+    // DEBIN
+    async doTransactionDebin(body: DoRequestDtoDebin) {
+        try {
+            const { originCbu, amount } = body;
+
+            const params: BindRequestInterface = {
+                origin_id: String(body.idTransaction),
+                value: {
+                    currency: CoinsFiat.ARS,
+                    amount: Number(amount).toFixed(2),
+                },
+                to: {
+                    cbu: originCbu,
+                },
+                concept: ConceptBind.VAR,
+                expiration: 20
+            };
+
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`
+            }
+
+            const url: string = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/DEBIN/transaction-requests`;
+
+            const config: AxiosRequestConfig = {
+                method: 'POST',
+                url,
+                data: params,
+                headers,
+                httpsAgent: this.httpsAgent
+            };
+
+            const response = await axios(config);
+
+            console.log(response.data);
+            console.log('body', body);
+
+            return response.data;
+        } catch (error) {
+            console.log('body', body);
+            console.log(error.response.data)
+            throw error?.response?.data ?? 'Falla en el servicio bancario.';
+        }
+    }
+
+    async getTransactionDebin(param: any) {
+        try {
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`,
+                obp_status: param.status,
+                obp_limit: param.limit,
+                obp_offset: param.offset,
+                obp_from_date: param.from_date,
+                obp_to_date: param.to_date,
+            }
+            const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/DEBIN`, {
+                headers,
+                httpsAgent: this.httpsAgent
+            })
+
+            return response.data
+        } catch (error) {
+            console.log({ payload: param, error: error?.response?.data })
+            throw error?.response?.data ?? 'Falla en el servicio bancario.'
+        }
+    }
+
+    async getTransactionByIdDebin(id: string) {
+        try {
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`
+            }
+            const response = await axios.get(`${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/DEBIN/${id}`, {
+                headers,
+                httpsAgent: this.httpsAgent
+            })
+
+            return response.data
+        } catch (error) {
+            console.log({ payload: id, error: error?.response?.data })
+            throw error?.response?.data ?? 'Falla en el servicio bancario.'
+        }
+    }
+
+    // Webhook
+    async webhook(payload: any) {
+        const headers = {
+            Authorization: `JWT ${await this.getToken()}`
+        }
+
+        const url: string = `${this.URL}/webhooks`;
+
+        const config: AxiosRequestConfig = {
+            method: 'PUT',
+            url,
+            data: payload,
+            headers,
+            httpsAgent: this.httpsAgent
+        };
+
+        try {
+
+            const response = await axios(config);
+            return response.data;
+        } catch (error) {
+            console.log('body', payload);
+            console.log(error.response.data)
+            throw error?.response?.data ?? 'Falla en el servicio bancario.';
+        }
+    }
+
+    async getWebhook() {
+        try {
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`,
+            }
+            const response = await axios.get(`${this.URL}/webhooks`, {
+                headers,
+                httpsAgent: this.httpsAgent
+            })
+
+            return response.data
+        } catch (error) {
+            console.log(error?.response?.data)
+            throw error?.response?.data ?? 'Falla en el servicio bancario.';
+        }
+    }
+
+    async deleteWebhook(code: string) {
+        try {
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`,
+            }
+            const response = await axios.delete(`${this.URL}/webhooks/code/${code}`, {
+                headers,
+                httpsAgent: this.httpsAgent
+            })
+
+            return response.data
+        } catch (error) {
+            console.log(error?.response?.data)
+            throw error?.response?.data ?? 'Falla en el servicio bancario.';
         }
     }
 }

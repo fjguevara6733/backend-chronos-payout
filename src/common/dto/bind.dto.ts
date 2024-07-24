@@ -24,3 +24,21 @@ export class AliasDto {
   @IsNotEmpty()
   alias: string;
 }
+
+
+export class DoRequestDtoDebin {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  originCbu: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  amount: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  idTransaction: string;
+}
