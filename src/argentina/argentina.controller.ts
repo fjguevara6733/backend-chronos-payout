@@ -35,7 +35,7 @@ export class ArgentinaController {
             return {
                 statusCode: HttpStatus.ACCEPTED,
                 message: 'send Transaction',
-                data: await this.bindService.doTransaction(payload)
+                data: await this.bindService.doTransactionTest(payload)
             };
         } catch (error) {
             throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);

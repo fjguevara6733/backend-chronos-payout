@@ -134,6 +134,57 @@ export class BindService {
         }
     }
 
+    async doTransactionTest(body: DoRequestDto) {
+        try {
+            const { destinationCbu, amount } = body;
+
+            if (Number(amount) < 10) {
+                throw new Error('El monto debe ser inferior a 10 pesos')
+            }
+
+            const params: BindRequestInterface = {
+                origin_id: String(body.idTransaction),
+                origin_debit: {
+                    cvu: process.env.CVU_DEBITO_BIND,
+                },
+                value: {
+                    currency: CoinsFiat.ARS,
+                    amount: Number(amount).toFixed(2),
+                },
+                to: {
+                    cbu: destinationCbu,
+                },
+                concept: ConceptBind.VAR,
+                description: "Pago Alfred",
+            };
+
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`
+            }
+
+            const url: string = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU/transaction-requests`;
+
+            const config: AxiosRequestConfig = {
+                method: 'POST',
+                url,
+                data: params,
+                headers,
+                httpsAgent: this.httpsAgent
+            };
+
+            const response = await axios(config);
+
+            console.log(response.data);
+            console.log('body', body);
+
+            return response.data;
+        } catch (error) {
+            console.log('body', body);
+            console.log(error.response.data)
+            throw new Error(error?.response?.data?.message);
+        }
+    }
+
     async getTransaction(param: any) {
         try {
             const headers = {
