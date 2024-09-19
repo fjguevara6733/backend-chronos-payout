@@ -1,16 +1,16 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
-import { BindService } from 'src/bind/bind.service';
 import { DoRequestDto } from 'src/common/dto/bind.dto';
 import { DefaultResponsesDto, ErrorResponseDto } from 'src/common/dto/response.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/JwtAutGuard.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { ArgentinaService } from './argentina.service';
 
 @Controller('argentina')
 export class ArgentinaController {
     constructor(
-        private readonly bindService: BindService,
+        private readonly bindService: ArgentinaService,
         private readonly authService: AuthService
     ) { }
 
