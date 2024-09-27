@@ -166,4 +166,15 @@ export class BindController {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
     }
   }
+
+  @Post('webhook-received')
+  async Sendwebhook(
+    @Body() payload: any
+  ): Promise<any> {
+    try {
+      return await this.bindService.sendwebhook(payload);
+    } catch (error) {
+      return true
+    }
+  }
 }

@@ -451,4 +451,30 @@ export class BindService {
             throw error?.response?.data ?? 'Falla en el servicio bancario.';
         }
     }
+
+    async sendwebhook(payload: any) {
+        console.log('webhook received', payload);
+        const headers = {
+            'Content-Type': `application/json`,
+        }
+
+        const url: string = `https://ramps-dev.alfredpay.io/v1/webhook/notification`;
+
+        const config: AxiosRequestConfig = {
+            method: 'POST',
+            url,
+            data: payload,
+            headers,
+        };
+
+        try {
+
+            const response = await axios(config);
+            return true;
+        } catch (error) {
+            console.log('webhook received ERROR', payload);
+            console.log(error.response.data)
+            return true
+        }
+    }
 }
