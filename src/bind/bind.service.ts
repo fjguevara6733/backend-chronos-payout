@@ -404,7 +404,8 @@ export class BindService {
             url,
             data: payload,
             headers,
-            httpsAgent: this.httpsAgent
+            httpsAgent: this.httpsAgent,
+            timeout: 300000
         };
 
         try {
@@ -413,6 +414,7 @@ export class BindService {
             return response.data;
         } catch (error) {
             console.log('body', payload);
+            console.log('header', config);
             console.log(error.response.data)
             throw error?.response?.data ?? 'Falla en el servicio bancario.';
         }
