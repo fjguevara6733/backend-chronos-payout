@@ -423,7 +423,7 @@ export class BindService {
             return response.data;
         } catch (error) {
             console.log('body', payload);
-            console.log('header', config);
+            console.log('config', config);
             console.log(error.response.data)
             throw error?.response?.data ?? 'Falla en el servicio bancario.';
         }
