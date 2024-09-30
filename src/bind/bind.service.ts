@@ -394,7 +394,8 @@ export class BindService {
     // Webhook
     async webhook(payload: any) {
         const headers = {
-            Authorization: `JWT ${await this.getToken()}`
+            Authorization: `JWT ${await this.getToken()}`,
+            'Content-Type': 'application/json'
         }
 
         const url: string = `${this.URL}/webhooks`;
@@ -402,7 +403,15 @@ export class BindService {
         const config: AxiosRequestConfig = {
             method: 'PUT',
             url,
-            data: payload,
+            data: {
+                "url": "https://ramps-dev.alfredpay.io/v1/webhook/notification",
+                "description": "una descripcion",
+                "code": "1",
+                "enabled": true,
+                "events": [
+                    "ALL"
+                ]
+            },
             headers,
             httpsAgent: this.httpsAgent,
             timeout: 300000
@@ -424,6 +433,7 @@ export class BindService {
         try {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`,
+                'Content-Type': 'application/json'
             }
             const response = await axios.get(`${this.URL}/webhooks`, {
                 headers,
@@ -441,6 +451,7 @@ export class BindService {
         try {
             const headers = {
                 Authorization: `JWT ${await this.getToken()}`,
+                'Content-Type': 'application/json'
             }
             const response = await axios.delete(`${this.URL}/webhooks/code/${code}`, {
                 headers,
