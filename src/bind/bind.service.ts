@@ -403,15 +403,7 @@ export class BindService {
         const config: AxiosRequestConfig = {
             method: 'PUT',
             url,
-            data: {
-                "url": "https://ramps-dev.alfredpay.io/v1/webhook/notification",
-                "description": "una descripcion",
-                "code": "1",
-                "enabled": true,
-                "events": [
-                    "ALL"
-                ]
-            },
+            data: payload,
             headers,
             httpsAgent: this.httpsAgent,
             timeout: 300000
