@@ -501,6 +501,7 @@ export class BindService {
     }
 
     async getTransactionBDaAlfred() {
+        console.log('Cron en ejecucion')
         try {
 
             const fechas = await this.obtenerFechas();
