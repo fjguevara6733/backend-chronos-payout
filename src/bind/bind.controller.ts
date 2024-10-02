@@ -180,7 +180,7 @@ export class BindController {
   }
 
   @Get('get-transaction-bd')
-  @Cron(CronExpression.EVERY_MINUTE)
+  // @Cron(CronExpression.EVERY_MINUTE)
   async getTransactionBD( ) {
     try {
       return await this.bindService.getTransactionBD();

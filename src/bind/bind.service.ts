@@ -501,7 +501,7 @@ export class BindService {
   }
 
   async getTransactionBD() {
-    const fechas = this.obtenerFechas();
+    const fechas = await this.obtenerFechas();
     const query = `SELECT b.transaction_id,b.datetime,
             c.transaction_id_2,
             c.counterparty_account_address,c.counterparty_name,c.origin_debit_cvu,
@@ -521,7 +521,7 @@ export class BindService {
       .catch((error) => error);
   }
 
-  obtenerFechas() {
+  async obtenerFechas() {
     // Obtener la fecha actual
     const fechaActual = new Date();
 
