@@ -179,13 +179,21 @@ export class BindController {
     }
   }
 
-  @Get('get-transaction-bd')
-  // @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_MINUTE)
+  async getTransactionBDaAlfred( ) {
+    try {
+      return await this.bindService.getTransactionBDaAlfred();
+    } catch (error) {
+      throw error
+    }
+  }
+
+  @Get('get-transaction-bd-alfred')
   async getTransactionBD( ) {
     try {
       return await this.bindService.getTransactionBD();
     } catch (error) {
-      return error
+      throw error
     }
   }
 }
