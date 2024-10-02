@@ -3,6 +3,7 @@ import { BindService } from './bind.service';
 import { AliasDto, DoRequestDto, DoRequestDtoDebin } from 'src/common/dto/bind.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { DefaultResponsesDto, ErrorResponseDto } from 'src/common/dto/response.dto';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @ApiTags('BindController')
 @Controller('transaction')
@@ -173,6 +174,16 @@ export class BindController {
   ): Promise<any> {
     try {
       return await this.bindService.sendwebhook(payload);
+    } catch (error) {
+      return true
+    }
+  }
+
+  @Get('get-transaction-bd')
+  @Cron(CronExpression.EVERY_MINUTE)
+  async getTransactionBD( ) {
+    try {
+      return await this.bindService.getTransactionBD();
     } catch (error) {
       return true
     }

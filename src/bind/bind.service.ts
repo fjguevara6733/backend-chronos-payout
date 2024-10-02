@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
 import axios, { AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 import * as https from 'https';
 import { AliasDto, DoRequestDto, DoRequestDtoDebin } from 'src/common/dto/bind.dto';
 import { BindRequestInterface } from 'src/common/interfaces/bind.interface';
 import { CoinsFiat, ConceptBind } from 'src/common/utils/enum';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class BindService {
@@ -16,7 +18,10 @@ export class BindService {
     private ACCOUNT_ID = process.env.ACCOUNT_ID_BIND;
     private VIEW_ID = process.env.VIEW_ID_BIND;
 
-    constructor() { }
+    constructor(
+        @InjectEntityManager('chronos')
+        private readonly chronosEntityManager: EntityManager,
+    ) { }
 
     async requestLogin() {
         try {
@@ -481,5 +486,25 @@ export class BindService {
             console.log(error.response.data)
             return true
         }
+    }
+
+    async getTransactionBD(){
+        const query = `SELECT b.transaction_id,b.datetime,
+            c.transaction_id_2,
+            c.counterparty_account_address,c.counterparty_name,c.origin_debit_cvu,
+            c.origin_debit_cuit,  b.transaction_type,
+            c.transaction_status, c.transaction_amount
+            FROM cvu_account_transactions a, transactions b, 
+            bind_cvu_accounts_transactions c where 
+            b.account_transaction_id=a.cvu_account_transaction_id 
+            and a.bind_transaction_id=c.id  and 
+            a.cvu_account_id in (293) and 
+            date_format(datetime, '%Y%m%d') between '20241001' and '20241002' 
+            and  b.transaction_type in ('receive') and c.transaction_amount < 2000000
+            order by 2`;
+        return await this.chronosEntityManager
+            .query(query)
+            .then((response) => response)
+            .catch((error) => error);
     }
 }
