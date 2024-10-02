@@ -185,7 +185,7 @@ export class BindController {
     try {
       return await this.bindService.getTransactionBD();
     } catch (error) {
-      return true
+      return error
     }
   }
 }
