@@ -19,8 +19,8 @@ export class BindService {
     private VIEW_ID = process.env.VIEW_ID_BIND;
 
     constructor(
-        @InjectEntityManager('chronos')
-        private readonly chronosEntityManager: EntityManager,
+        // @InjectEntityManager('chronos')
+        // private readonly chronosEntityManager: EntityManager,
     ) { }
 
     async requestLogin() {
@@ -510,13 +510,13 @@ export class BindService {
             const fechas = await this.obtenerFechas();
             const urlApi = `https://api.chronospay.io/alfred-wallet/v1/transaction/get-transaction`;
             const config2: AxiosRequestConfig = {
-                method: 'POST',
-                url:urlApi,
+                method: 'GET',
+                url: urlApi,
                 data: {
                     "status": "COMPLETED",
                     "limit": "50",
                     "offset": "0",
-                    "from_date": fechas.ayer,
+                    "from_date": fechas.hoy,
                     "to_date": fechas.hoy,
                     "origin": "TRANSFERENCIAS_RECIBIDAS"
                 },
@@ -529,18 +529,18 @@ export class BindService {
                 throw error
             });
             const result = [];
-            resultApi.forEach(element => {
-                const response :TransactionDataInterface={
+            resultApi.data.forEach(element => {
+                const response: TransactionDataInterface = {
                     transaction_id: element.transaction_ids[0],
-                    transaction_id_2: element.id,
-                    transaction_status: element.status,
                     datetime: element.start_date,
-                    transaction_amount: element.charge.value.amount,
+                    transaction_id_2: element.id,
                     counterparty_account_address: "",
                     counterparty_name: element.counterparty.name,
                     origin_debit_cvu: element.details.origin_debit.cvu,
                     origin_debit_cuit: element.details.origin_debit.cuit,
                     transaction_type: "receive",
+                    transaction_status: element.status,
+                    transaction_amount: element.charge.value.amount,
                 };
                 result.push(response);
             });
@@ -564,28 +564,50 @@ export class BindService {
     async getTransactionBD() {
         try {
 
-            const fechas = await this.obtenerFechas();
-            const query = `SELECT b.transaction_id,b.datetime,
-            c.transaction_id_2,
-            c.counterparty_account_address,c.counterparty_name,c.origin_debit_cvu,
-            c.origin_debit_cuit,  b.transaction_type,
-            c.transaction_status, c.transaction_amount
-            FROM cvu_account_transactions a, transactions b,
-            bind_cvu_accounts_transactions c where
-            b.account_transaction_id=a.cvu_account_transaction_id
-            and a.bind_transaction_id=c.id  and
-            a.cvu_account_id in (293) and
-            date_format(datetime, '%Y%m%d') between '${fechas.ayer}' and '${fechas.hoy}'
-            and  b.transaction_type in ('receive') and c.transaction_amount < 2000000
-            order by 2`;
+            const headers = {
+                'Content-Type': `application/json`,
+            };
 
-            const result = await this.chronosEntityManager
-                .query(query)
-                .then((response) => response)
-                .catch((error) => error);
+            const fechas = await this.obtenerFechas();
+
+            const urlApi = `https://api.chronospay.io/alfred-wallet/v1/transaction/get-transaction`;
+            const config2: AxiosRequestConfig = {
+                method: 'GET',
+                url: urlApi,
+                data: {
+                    "status": "COMPLETED",
+                    "limit": "50",
+                    "offset": "0",
+                    "from_date": fechas.hoy,
+                    "to_date": fechas.hoy,
+                    "origin": "TRANSFERENCIAS_RECIBIDAS"
+                },
+                headers,
+            };
+
+            const resultApi = await axios(config2).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                throw error
+            });
+            const result = [];
+            resultApi.data.forEach(element => {
+                const response: TransactionDataInterface = {
+                    transaction_id: element.transaction_ids[0],
+                    datetime: element.start_date,
+                    transaction_id_2: element.id,
+                    counterparty_account_address: "",
+                    counterparty_name: element.counterparty.name,
+                    origin_debit_cvu: element.details.origin_debit.cvu,
+                    origin_debit_cuit: element.details.origin_debit.cuit,
+                    transaction_type: "receive",
+                    transaction_status: element.status,
+                    transaction_amount: element.charge.value.amount,
+                };
+                result.push(response);
+            });
 
             return result
-
         } catch (error) {
             throw error
         }
