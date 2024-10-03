@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { readFileSync } from 'fs';
 import * as https from 'https';
 import { AliasDto, DoRequestDto, DoRequestDtoDebin } from 'src/common/dto/bind.dto';
-import { BindRequestInterface } from 'src/common/interfaces/bind.interface';
+import { BindRequestInterface, TransactionDataInterface } from 'src/common/interfaces/bind.interface';
 import { CoinsFiat, ConceptBind } from 'src/common/utils/enum';
 import { EntityManager } from 'typeorm';
 
@@ -501,32 +501,49 @@ export class BindService {
     }
 
     async getTransactionBDaAlfred() {
-        console.log('Cron en ejecucion')
+        console.log('Cron en ejecucion');
+        const headers = {
+            'Content-Type': `application/json`,
+        };
         try {
 
             const fechas = await this.obtenerFechas();
-            const query = `SELECT b.transaction_id,b.datetime,
-            c.transaction_id_2,
-            c.counterparty_account_address,c.counterparty_name,c.origin_debit_cvu,
-            c.origin_debit_cuit,  b.transaction_type,
-            c.transaction_status, c.transaction_amount
-            FROM cvu_account_transactions a, transactions b,
-            bind_cvu_accounts_transactions c where
-            b.account_transaction_id=a.cvu_account_transaction_id
-            and a.bind_transaction_id=c.id  and
-            a.cvu_account_id in (293) and
-            date_format(datetime, '%Y%m%d') between '${fechas.ayer}' and '${fechas.hoy}'
-            and  b.transaction_type in ('receive') and c.transaction_amount < 2000000
-            order by 2`;
-
-            const result = await this.chronosEntityManager
-                .query(query)
-                .then((response) => response)
-                .catch((error) => error);
-
-            const headers = {
-                'Content-Type': `application/json`,
+            const urlApi = `https://api.chronospay.io/alfred-wallet/v1/transaction/get-transaction`;
+            const config2: AxiosRequestConfig = {
+                method: 'POST',
+                url:urlApi,
+                data: {
+                    "status": "COMPLETED",
+                    "limit": "50",
+                    "offset": "0",
+                    "from_date": fechas.ayer,
+                    "to_date": fechas.hoy,
+                    "origin": "TRANSFERENCIAS_RECIBIDAS"
+                },
+                headers,
             };
+
+            const resultApi = await axios(config2).then((response) => {
+                return response.data;
+            }).catch((error) => {
+                throw error
+            });
+            const result = [];
+            resultApi.forEach(element => {
+                const response :TransactionDataInterface={
+                    transaction_id: element.transaction_ids[0],
+                    transaction_id_2: element.id,
+                    transaction_status: element.status,
+                    datetime: element.start_date,
+                    transaction_amount: element.charge.value.amount,
+                    counterparty_account_address: "",
+                    counterparty_name: element.counterparty.name,
+                    origin_debit_cvu: element.details.origin_debit.cvu,
+                    origin_debit_cuit: element.details.origin_debit.cuit,
+                    transaction_type: "receive",
+                };
+                result.push(response);
+            });
 
             const url: string = `https://circle-ramp.alfredpay.app/v1/webhook/deposit/argentina`;
 
@@ -586,12 +603,10 @@ export class BindService {
         // Formatear las fechas en el formato deseado y eliminar los ceros iniciales
         const fechaActualFormateada = fechaActual
             .toISOString()
-            .slice(0, 10)
-            .replace(/-/g, '');
+            .slice(0, 10);
         const fechaRestadaFormateada = fechaRestada
             .toISOString()
-            .slice(0, 10)
-            .replace(/-/g, '');
+            .slice(0, 10);
 
         // Retornar un objeto con ambas fechas
         return {

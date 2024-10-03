@@ -14,3 +14,16 @@ export interface BindRequestInterface {
   },
   expiration?:number;
 }
+
+export interface TransactionDataInterface {
+  transaction_id: number;
+  datetime: string;
+  transaction_id_2: string;
+  counterparty_account_address: string;
+  counterparty_name: string;
+  origin_debit_cvu: string;
+  origin_debit_cuit: string;
+  transaction_type: string;
+  transaction_status: string;
+  transaction_amount: number;
+}
