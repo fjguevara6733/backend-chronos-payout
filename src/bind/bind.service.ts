@@ -514,7 +514,7 @@ export class BindService {
                 url: urlApi,
                 data: {
                     "status": "COMPLETED",
-                    "limit": "50",
+                    "limit": "200",
                     "offset": "0",
                     "from_date": fechas.hoy,
                     "to_date": fechas.hoy,
@@ -578,7 +578,7 @@ export class BindService {
                 url: urlApi,
                 data: {
                     "status": "COMPLETED",
-                    "limit": "50",
+                    "limit": "200",
                     "offset": "0",
                     "from_date": fechas.hoy,
                     "to_date": fechas.hoy,
