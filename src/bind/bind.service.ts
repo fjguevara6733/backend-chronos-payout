@@ -619,6 +619,7 @@ export class BindService {
     async obtenerFechas() {
         // Obtener la fecha actual
         const fechaActual = new Date();
+        fechaActual.setHours(fechaActual.getHours() - 4);
 
         // Restar un día
         const fechaRestada = new Date(fechaActual);
