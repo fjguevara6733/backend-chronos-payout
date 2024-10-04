@@ -190,6 +190,55 @@ export class BindService {
         }
     }
 
+    async doTransactionReturn(body: DoRequestDto) {
+        try {
+            const { destinationCbu, amount } = body;
+
+            // await this.getAccount(destinationCbu)
+
+            const params: BindRequestInterface = {
+                origin_id: String(body.idTransaction),
+                origin_debit: {
+                    cvu: '0000058100000000014539',
+                },
+                value: {
+                    currency: CoinsFiat.ARS,
+                    amount: Number(amount).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0],
+                },
+                to: {
+                    cbu: destinationCbu,
+                },
+                concept: ConceptBind.VAR,
+                description: 'Rembolso Pago Alfred',
+            };
+
+            const headers = {
+                Authorization: `JWT ${await this.getToken()}`,
+            };
+
+            const url: string = `${this.URL}/banks/${this.BANK_ID}/accounts/${this.ACCOUNT_ID}/${this.VIEW_ID}/transaction-request-types/TRANSFER-CVU/transaction-requests`;
+
+            const config: AxiosRequestConfig = {
+                method: 'POST',
+                url,
+                data: params,
+                headers,
+                httpsAgent: this.httpsAgent,
+            };
+
+            const response = await axios(config);
+
+            console.log(response.data);
+            console.log('body', body);
+
+            return response.data;
+        } catch (error) {
+            console.log('body', body);
+            console.log(error.response.data);
+            throw new Error(error?.response?.data?.message);
+        }
+    }
+
     async getTransaction(param: any) {
         try {
             const headers = {

@@ -196,4 +196,18 @@ export class BindController {
       throw error
     }
   }
+
+  @Post('send-transaction-return')
+  async sendTransactionReturn(@Body() payload: DoRequestDto): Promise<DefaultResponsesDto | ErrorResponseDto> {
+    try {
+      console.log("@Post('send-transaction-return')")
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'send Transaction return',
+        data: await this.bindService.doTransactionReturn(payload)
+      };
+    } catch (error) {
+      throw new HttpException(error?.message, HttpStatus.BAD_REQUEST);
+    }
+  }
 }
