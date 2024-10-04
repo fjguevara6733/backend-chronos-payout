@@ -570,6 +570,8 @@ export class BindService {
 
             const fechas = await this.obtenerFechas();
 
+            console.log({fechas})
+
             const urlApi = `https://api.chronospay.io/alfred-wallet/v1/transaction/get-transaction`;
             const config2: AxiosRequestConfig = {
                 method: 'GET',
