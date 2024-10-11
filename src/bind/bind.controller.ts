@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
 import { BindService } from './bind.service';
 import { AliasDto, DoRequestDto, DoRequestDtoDebin } from 'src/common/dto/bind.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -129,6 +129,7 @@ export class BindController {
     }
   }
 
+  @HttpCode(200)
   @Post('webhook')
   async webhook(@Body() payload: any): Promise<DefaultResponsesDto | ErrorResponseDto> {
     try {
@@ -142,6 +143,7 @@ export class BindController {
     }
   }
 
+  @HttpCode(200)
   @Get('webhook')
   async Getwebhook(): Promise<DefaultResponsesDto | ErrorResponseDto> {
     try {
@@ -155,6 +157,7 @@ export class BindController {
     }
   }
 
+  @HttpCode(200)
   @Delete('webhook')
   async Deletewebhook(@Param('code') code: string): Promise<DefaultResponsesDto | ErrorResponseDto> {
     try {
@@ -168,6 +171,7 @@ export class BindController {
     }
   }
 
+  @HttpCode(200)
   @Post('webhook-received')
   async Sendwebhook(
     @Body() payload: any
