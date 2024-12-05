@@ -594,16 +594,26 @@ export class BindService {
                 result.push(response);
             });
 
-            const url: string = `https://circle-ramp.alfredpay.app/v1/webhook/deposit/argentina`;
+            const urlsSend = [
+                `https://circle-ramp.alfredpay.app/v1/webhook/deposit/argentina`,
+                `https://penny-api-ramps.alfredpay.app/v1/webhook/deposit/argentina`,
+                `https://polybase-ramps.alfredpay.app/v1/webhook/deposit/argentina`
+            ]
 
-            const config: AxiosRequestConfig = {
-                method: 'POST',
-                url,
-                data: result,
-                headers,
-            };
+            for (const url of urlsSend) {
+                const config: AxiosRequestConfig = {
+                    method: 'POST',
+                    url,
+                    data: result,
+                    headers,
+                };
 
-            return await axios(config);
+                await axios(config);
+
+                continue;
+            }
+
+            return true
         } catch (error) {
             throw error
         }
@@ -619,7 +629,7 @@ export class BindService {
 
             const fechas = await this.obtenerFechas();
 
-            console.log({fechas})
+            console.log({ fechas })
 
             const urlApi = `https://api.chronospay.io/alfred-wallet/v1/transaction/get-transaction`;
             const config2: AxiosRequestConfig = {
