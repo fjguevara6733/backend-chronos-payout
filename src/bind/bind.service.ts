@@ -109,7 +109,7 @@ export class BindService {
                     cbu: destinationCbu,
                 },
                 concept: ConceptBind.VAR,
-                description: 'Pago Alfred',
+                description: 'Pago',
             };
 
             const headers = {
@@ -160,7 +160,7 @@ export class BindService {
                     cbu: destinationCbu,
                 },
                 concept: ConceptBind.VAR,
-                description: 'Pago Alfred',
+                description: 'Pago',
             };
 
             const headers = {
@@ -209,7 +209,7 @@ export class BindService {
                     cbu: destinationCbu,
                 },
                 concept: ConceptBind.VAR,
-                description: 'Rembolso Pago Alfred',
+                description: 'Rembolso',
             };
 
             const headers = {
