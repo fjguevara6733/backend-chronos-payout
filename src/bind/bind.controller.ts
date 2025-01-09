@@ -183,7 +183,7 @@ export class BindController {
     }
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  // @Cron(CronExpression.EVERY_MINUTE)
   async getTransactionBDaAlfred( ) {
     try {
       return await this.bindService.getTransactionBDaAlfred();
